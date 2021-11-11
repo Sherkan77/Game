@@ -1,0 +1,56 @@
+spisok = list(range(1, 10))
+
+def show(spisok):
+    for i in range(3):
+        print(spisok[0 + i * 3], spisok[1 + i * 3], spisok[2 + i * 3])
+
+def ask(value):
+    valid = False
+    while not valid:
+        question = input("Напишите цифру куда поставить - " + value + "! ")
+        try:
+            question = int(question)
+        except:
+            print("Некорректный ввод! Введите число от 1 до 9!")
+            continue
+        if question >= 1 and question <= 9:
+            if (str(spisok[question - 1]) not in "X O"):
+                spisok[question - 1] = value
+                valid = True
+            else:
+                print("Это поле занято!")
+        else:
+            print("Некорректный ввод! Введите число от 1 до 9!")
+
+
+def check_value(spisok):
+    win_coord = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
+    for each in win_coord:
+        if spisok[each[0]] == spisok[each[1]] == spisok[each[2]]:
+            return spisok[each[0]]
+    return False
+
+
+def main(spisok):
+    counter = 0
+    win = False
+    while not win:
+        show(spisok)
+        if counter % 2 == 0:
+            ask("x")
+        else:
+            ask("0")
+        counter += 1
+        if counter > 4:
+            arg = check_value(spisok)
+            if arg:
+                print(arg, "Победа!")
+                win = True
+                break
+        if counter == 9:
+            print("Ничья!")
+            break
+    show(spisok)
+
+
+main(spisok)
